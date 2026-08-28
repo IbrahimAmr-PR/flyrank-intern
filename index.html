@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Refresh Opportunity Scoring | Research Paper</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1e293b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        h1 { font-size: 2.25rem; color: #0f172a; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-top: 36px; color: #1e293b; }
+        .authors { font-size: 1.1rem; color: #64748b; margin-bottom: 24px; }
+        .abstract {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 4px;
+            margin: 24px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+        th { background: #f1f5f9; }
+        .badge {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Content Refresh Opportunity Scoring & Decay Prediction</h1>
+        <div class="authors">Author: Ibrahim Amr | Track: Search Intelligence & ML</div>
+
+        <div class="abstract">
+            <strong>Abstract:</strong> Maintaining organic search visibility requires proactive identification of decaying content before severe impression loss occurs. In this study, we build and validate a machine learning decision-support pipeline to score content refresh opportunities using anonymized production search data. Using group-aware split validation (GroupKFold by content type), we evaluate a Random Forest Classifier against a non-machine-learning heuristic baseline. Our model demonstrates directional utility with a measured validation ROC-AUC of 0.76, significantly outperforming random partitioning estimates. Finally, we map predictions to a prioritized action playbook with strict editorial human-in-the-loop boundaries.
+        </div>
+
+        <h2>1. Problem Statement & Introduction</h2>
+        <p>Digital search content naturally decays over time due to algorithm shifts, competitors updating key assets, and intent drift. Editorial teams often lack quantitative prioritization frameworks, relying on reactive audits after traffic drops occur. This research supports decision-making by creating a predictive scoring model that ranks decaying content for proactive optimization.</p>
+
+        <h2>2. Data & Feature Scope</h2>
+        <p>The analysis utilizes anonymized search performance metrics derived from production search datasets. Key features evaluated include search volume, keyword competition metrics, cost-per-click (CPC), content classifications, and intent clusters. Content identification parameters, private queries, domain names, and individual client metrics were completely excluded to ensure public safety.</p>
+
+        <h2>3. Methodology & Validation Design</h2>
+        <p>To prevent data leakage across related content verticals, we implemented a <strong>GroupKFold cross-validation strategy</strong> grouped by <code>content_type</code> rather than standard random train-test splitting. Target decay labels (<code>is_declining</code>) were formulated based on observed downward traffic trajectories.</p>
+
+        <h2>4. Validation Audit & Results</h2>
+        <p>The validation audit clearly highlights the variance between random naive splits and group-honest splits:</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Week 5 (Random Split)</th>
+                    <th>Week 6 (Group-Honest Validation)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Accuracy</strong></td>
+                    <td>0.8240</td>
+                    <td>0.7410</td>
+                </tr>
+                <tr>
+                    <td><strong>ROC-AUC</strong></td>
+                    <td>0.8850</td>
+                    <td><strong>0.7600</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>F1-Score</strong></td>
+                    <td>0.7910</td>
+                    <td>0.6850</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>5. Limitations & Honest Framing</h2>
+        <p>This model serves strictly as a <em>decision-support system</em> and directional indicator. It does not provide causal guarantees that rewriting a flagged page will directly recover specific organic rankings. Unobserved variables, such as major search engine core updates, lie outside feature boundaries.</p>
+
+        <h2>6. Ranked Content Recommendations (Playbook)</h2>
+        <ul>
+            <li><span class="badge">P1 - Urgent Refresh</span> High traffic decay risk (Reason Code: <code>HIGH_TRAFFIC_DECAY_RISK</code>).</li>
+            <li><span class="badge">P2 - Content Rewrite</span> Moderate decay risk; needs intent realignment (Reason Code: <code>MODERATE_DECAY_INTENT_DRIFT</code>).</li>
+            <li><span class="badge">P3 - Preserve & Monitor</span> Evergreen high performing pages (Reason Code: <code>STABLE_EVERGREEN</code>).</li>
+        </ul>
+        <p><strong>Strict No-Go Rule:</strong> High-converting transactional landing pages and legal policy pages are barred from automated text generation and require full manual CRO review.</p>
+
+        <h2>7. Reproducibility & Code Repository</h2>
+        <p>All pipeline stages, notebooks (W01 to W07), and data processing workflows are fully reproducible and available in the GitHub Repository: <a href="https://github.com/IbrahimAmr-PR/flyrank-intern" target="_blank">IbrahimAmr-PR/flyrank-intern</a>.</p>
+
+        <footer>
+            <p>Built on the <a href="https://flyrank.ai" target="_blank">FlyRank ML Internship dataset</a>.</p>
+        </footer>
+    </div>
+</body>
+</html>
